@@ -1,38 +1,43 @@
 var express = require("express");
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
 
 var app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 
+mongoose.connect("mongodb://localhost/yelp_camp");
+
+var campgroundSchema = new mongoose.Schema({
+  name: String,
+  image: String
+});
+
+var Campground = mongoose.model("Campground", campgroundSchema);
+
 app.get("/", function(req, res) {
   res.render("landing");
 });
 
-var campgrounds = [
-  {
-    name: "Hızır Kamp",
-    image:
-      "https://kampbros.com/file/2019/04/Kazdagi-Balikesir-kampbros-89345.jpg"
-  },
-  {
-    name: "Akaleos Kamp Alanı",
-    image:
-      "https://kampbros.com/file/2019/04/Akaleos-kamp-alan%C4%B1-kampbros-654.jpg"
-  },
-  {
-    name: "Camp Ant",
-    image: "https://kampbros.com/file/2019/04/erdek-cadir-kampi-ant-kamping.jpg"
-  }
-];
-
 app.get("/campgrounds", function(req, res) {
-  res.render("campgrounds", { campgrounds });
+  Campground.find({}, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("campgrounds", { campgrounds: data });
+    }
+  });
 });
 
 app.post("/campgrounds", function(req, res) {
   const { name, image } = req.body;
-  campgrounds.push({ name, image });
+  Campground.create({ name, image }, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(data);
+    }
+  });
   res.redirect("campgrounds");
 });
 
