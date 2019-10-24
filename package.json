@@ -13,7 +13,7 @@
     "ejs": "^2.7.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.6",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1"
@@ -24,7 +24,7 @@
     }
   },
   "devDependencies": {
-    "husky": "^3.0.5",
+    "husky": "^3.0.9",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1"
   }
