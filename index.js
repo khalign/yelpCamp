@@ -19,7 +19,7 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
-seedDB();
+// seedDB();
 
 app.use(
   require("express-session")({
