@@ -12,9 +12,10 @@ router.get("/", function(req, res) {
   });
 });
 
-router.post("/", function(req, res) {
+router.post("/", isAuth, function(req, res) {
   const { name, image, description } = req.body;
-  Campground.create({ name, image, description }, function(err, data) {
+  const author = { id: req.user._id, username: req.user.username };
+  Campground.create({ name, image, description, author }, function(err, data) {
     if (err) {
       console.log(err);
     } else {
@@ -24,7 +25,7 @@ router.post("/", function(req, res) {
   res.redirect("/campgrounds");
 });
 
-router.get("/add", function(req, res) {
+router.get("/add", isAuth, function(req, res) {
   res.render("campgrounds/new");
 });
 
@@ -39,5 +40,10 @@ router.get("/:id", function(req, res) {
       }
     });
 });
+
+function isAuth(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect("/login");
+}
 
 module.exports = router;
