@@ -41,8 +41,7 @@ router.get("/:id/edit", authorized, function(req, res) {
 
 router.put("/:id", authorized, function(req, res) {
   Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(
-    err,
-    data
+    err
   ) {
     if (err) console.log(err);
     else res.redirect("/campgrounds/" + req.params.id);
