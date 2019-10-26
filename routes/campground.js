@@ -4,11 +4,8 @@ var Campground = require("../models/campground");
 
 router.get("/", function(req, res) {
   Campground.find({}, function(err, data) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("campgrounds/index", { campgrounds: data });
-    }
+    if (err) console.log(err);
+    else res.render("campgrounds/index", { campgrounds: data });
   });
 });
 
@@ -16,11 +13,8 @@ router.post("/", isAuth, function(req, res) {
   const { name, image, description } = req.body;
   const author = { id: req.user._id, username: req.user.username };
   Campground.create({ name, image, description, author }, function(err, data) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(data);
-    }
+    if (err) console.log(err);
+    //  else console.log(data);
   });
   res.redirect("/campgrounds");
 });
@@ -33,11 +27,8 @@ router.get("/:id", function(req, res) {
   Campground.findById(req.params.id)
     .populate("comments")
     .exec(function(err, campground) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.render("campgrounds/show", { campground });
-      }
+      if (err) console.log(err);
+      else res.render("campgrounds/show", { campground });
     });
 });
 
@@ -55,6 +46,13 @@ router.put("/:id", function(req, res) {
   ) {
     if (err) console.log(err);
     else res.redirect("/campgrounds/" + req.params.id);
+  });
+});
+
+router.delete("/:id", function(req, res) {
+  Campground.findByIdAndRemove(req.params.id, function(err, data) {
+    if (err) console.log(err);
+    else res.redirect("/campgrounds");
   });
 });
 
